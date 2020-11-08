@@ -56,6 +56,11 @@ var upload = multer({ storage: storage });
 //**************************************************************************Tesing**********************************************//
 
 const userSchema = new mongoose.Schema({
+  fname:String,
+  lname:String,
+  uname:String,
+  staffid:String,
+  dept:String,
   email:String,
   password:String
 });
@@ -76,7 +81,10 @@ app.post("/login",function(req,res){
       if(foundOne){
         bcrypt.compare(req.body.password, foundOne.password, function(err, result) {
           if(result===true){
-        res.redirect('/wishes')
+        res.redirect('/wishes?valid='+ foundOne._id)
+      }
+      else{
+        res.status(404).send("USERNAME OR PASSWORD IS WORNG CHECK ONCE AGAIN");
       }
       });
       }
@@ -95,18 +103,35 @@ app.post("/register",function(req,res){
   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
     const newUser = new User(
       {
+        fname:req.body.fname,
+        lname:req.body.lname,
+        uname:req.body.uname,
+        staffid:req.body.sid,
+        dept:req.body.dname,
         email:req.body.username,
         password:hash
       }
     );
-    newUser.save(function(err){
+
+    User.find({email:req.body.username},function(err,foundItem){
       if(!err){
-        res.redirect('/wishes')
-      }
-      else{
-        console.log(err);
+        console.log(foundItem)
+        if(foundItem.length===0){
+          newUser.save(function(err){
+            if(!err){
+              res.redirect('/wishes?valid='+ newUser._id)
+            }
+            else{
+              console.log(err);
+            }
+          });
+        }
+        else{
+           res.status(404).send("The specified email is already registered please enter different one!");
+        }
       }
     });
+
 });
 
 });
@@ -192,7 +217,19 @@ app.post("/notice/specdept",function(req,res){
 });
 
 app.get("/wishes",function(req,res){
-  res.render("admin.ejs")
+  var passedVariable = req.query.valid;
+  //console.log(passedVariable)
+
+  User.findById(passedVariable, function(err, item) {
+    if(item!=null){
+      res.render("admin.ejs",{item:item});
+    }
+    else{
+      console.log("No such User")
+    }
+  });
+
+
 });
 
 app.post("/wishes",function(req,res){
