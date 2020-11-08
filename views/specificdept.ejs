@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Uplaoded Images</h1>
+
+      <div>
+
+          <% items.forEach(function(image) { %>
+            <form class="" action="/delete" method="POST">
+
+          <div>
+
+              <div>
+
+                  <img src="data:image/<%=image.img.contentType%>;base64,
+
+                       <%=image.img.data.toString('base64')%>">
+
+                  <div>
+
+                      <h5><%= image.name %></h5>
+
+                      <p><%= image.desc %></p>
+
+                      <h5><%= image.dept %></h5>
+
+                      <p><%= image.ques %></p><!-- To dispaly questions -->
+
+                      <p><%= image.answ %></p><!-- To dispaly answers -->
+
+
+                      <button type="submit"  name="cb" value = "<%= image._id %>"><i class="fas fa-trash-alt"></i></button>
+                      <!-- below code is for : once the item is deleted to send the name of the department from which it was deleted  -->
+                      <input type="hidden" name="selecteddept" value="<%= image.dept %>">
+
+                  </div>
+
+              </div>
+
+          </div>
+      </form>
+
+      <!-- form to add questions from users -->
+      <form class="" action="/specdept/addQues" method="post">
+        <!-- below code is for : Adding question and answer text area -->
+       <label for="desc">Question</label>
+
+       <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+       <input type="hidden" name="idofnot" value="<%= image.id %>">
+
+       <input type="hidden" name="selecteddept" value="<%= image.dept %>">
+
+       <button type="submit">POST</button>
+
+      </form>
+
+      <!-- form to add answers from users -->
+      <form class="" action="/specdept/addAns" method="post">
+        <label for="desc">Answer</label>
+
+        <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+        <input type="hidden" name="idofnot" value="<%= image.id %>">
+
+        <input type="hidden" name="selecteddept" value="<%= image.dept %>">
+
+        <button type="submit">POST</button>
+      </form>
+          <% }) %>
+
+      </div>
+  </body>
+</html>

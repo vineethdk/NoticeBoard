@@ -1,6 +1,8 @@
 //Should import package in Hyper terminal.
 
 //Like importing packages.
+require('dotenv').config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
@@ -8,6 +10,9 @@ const mongoose = require("mongoose");
 var fs = require('fs');
 var path = require('path');
 var multer = require('multer');
+
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 //Connecting to real Database in mongoose website.
 //mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/<dbname>', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -44,8 +49,77 @@ var storage = multer.diskStorage({
 });
 
 
-
 var upload = multer({ storage: storage });
+
+
+
+//**************************************************************************Tesing**********************************************//
+
+const userSchema = new mongoose.Schema({
+  email:String,
+  password:String
+});
+
+const User = new mongoose.model("User",userSchema)
+
+
+app.get("/",function(req,res){
+  res.render("home")
+});
+
+app.get("/login",function(req,res){
+  res.render("login")
+});
+
+app.post("/login",function(req,res){
+  User.findOne({email:req.body.username},function(err,foundOne){
+      if(foundOne){
+        bcrypt.compare(req.body.password, foundOne.password, function(err, result) {
+          if(result===true){
+        res.redirect('/wishes')
+      }
+      });
+      }
+      else{
+          console.log("Not yet registered");
+      }
+    })
+});
+
+app.get("/register",function(req,res){
+  res.render("register")
+});
+
+app.post("/register",function(req,res){
+
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    const newUser = new User(
+      {
+        email:req.body.username,
+        password:hash
+      }
+    );
+    newUser.save(function(err){
+      if(!err){
+        res.redirect('/wishes')
+      }
+      else{
+        console.log(err);
+      }
+    });
+});
+
+});
+
+
+
+
+
+//**************************************************************************Tesing**********************************************//
+
+
+
+
 
 //To send html and css to the initail screen.
 app.get("/addNotice",function(req,res){
@@ -96,14 +170,7 @@ app.post("/delete",function(req,res){
     else{
       console.log("successfully deleted!");
       //Code below is to retrive the images of that department after deleted
-      imgModel.find({dept:req.body.selecteddept},(err,items)=>{
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render('depar.ejs', { items: items });
-        }
-      });
+      res.redirect("/notice/"+req.body.selecteddept)
     }
   });
 });
@@ -112,14 +179,14 @@ app.get("/notice",function(req,res){
   res.render("depar.ejs",{ items: [] })
 })
 
-app.post("/notice",function(req,res){
+app.post("/notice/specdept",function(req,res){
   console.log(req.body.dep)
   imgModel.find({dept:req.body.dep},(err,items)=>{
     if (err) {
         console.log(err);
     }
     else {
-        res.render('depar.ejs', { items: items });
+        res.render('specificdept.ejs', { items: items });
     }
   })
 });
@@ -129,7 +196,7 @@ app.get("/wishes",function(req,res){
 });
 
 app.post("/wishes",function(req,res){
-  console.log(req.body.wish)
+  // console.log(req.body.wish)
   if (req.body.wish == "shownotice"){
     res.redirect("/notice")
   }
@@ -139,7 +206,7 @@ app.post("/wishes",function(req,res){
 })
 
 //Code below to add recieve questions posted.
-app.post("/notice/addQues",function(req,res){
+app.post("/specdept/addQues",function(req,res){
   console.log(req.body.idofnot)
 
   imgModel.findByIdAndUpdate(req.body.idofnot, { "$push": { "ques":req.body.desc } },
@@ -150,22 +217,26 @@ app.post("/notice/addQues",function(req,res){
    else{
        console.log("Updated User : ");
        //Code below is to retrive the images of that department after adding the question.
-       imgModel.find({dept:req.body.selecteddept},(err,items)=>{
-         if (err) {
-             console.log(err);
-         }
-         else {
-             res.render('depar.ejs', { items: items });
-         }
-       });
+       res.redirect("/notice/"+req.body.selecteddept)
    }
 });
 
 });
 
+app.get("/notice/:specdept",function(req,res){
+  imgModel.find({dept:req.params.specdept},(err,items)=>{
+    if (err) {
+        console.log(err);
+    }
+    else {
+        res.render('specificdept.ejs', { items: items });
+    }
+  });
+})
+
 //Code below to add recieve answers posted.
 
-app.post("/notice/addAns",function(req,res){
+app.post("/specdept/addAns",function(req,res){
   console.log(req.body.idofnot)
 
   imgModel.findByIdAndUpdate(req.body.idofnot, { "$push": { "answ":req.body.desc } },{ "new": true, "upsert": true },
@@ -176,14 +247,7 @@ app.post("/notice/addAns",function(req,res){
    else{
        console.log("Updated User : ");
        //Code below is to retrive the images of that department after adding the answer.
-       imgModel.find({dept:req.body.selecteddept},(err,items)=>{
-         if (err) {
-             console.log(err);
-         }
-         else {
-             res.render('depar.ejs', { items: items });
-         }
-       });
+       res.redirect("/notice/"+req.body.selecteddept)
    }
 });
 
