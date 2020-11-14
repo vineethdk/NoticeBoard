@@ -29,6 +29,7 @@ var imageSchema = new mongoose.Schema({
     name: String,
     desc: String,
     dept:String,
+    date:Date,
     img:{
         data: Buffer,
         contentType: String
@@ -99,7 +100,7 @@ app.get("/register",function(req,res){
 });
 
 app.post("/register",function(req,res){
-
+   //USER - STAFF //REMEMBER//
   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
     const newUser = new User(
       {
@@ -170,6 +171,7 @@ app.post('/addNotice', upload.single('image'), (req, res, next) => {
         name: req.body.name,
         desc: req.body.desc,
         dept:req.body.department,
+        date:req.body.dat,
         img: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
             contentType: 'image/png'
@@ -205,15 +207,27 @@ app.get("/notice",function(req,res){
 })
 
 app.post("/notice/specdept",function(req,res){
-  console.log(req.body.dep)
+  //console.log(req.body.dep)
   imgModel.find({dept:req.body.dep},(err,items)=>{
     if (err) {
         console.log(err);
     }
     else {
-        res.render('specificdept.ejs', { items: items });
+        //Below code is to retrive unique dates
+       imgModel.distinct('date',{dept:req.body.dep},(err,ite)=>{
+         if(err){
+           console.log(err);
+         }
+         else{
+
+           //console.log(ite)
+           res.render('specificdept.ejs', { items: items ,dates:ite});
+
+         }
+       });
+
     }
-  })
+  });
 });
 
 app.get("/wishes",function(req,res){
@@ -266,7 +280,17 @@ app.get("/notice/:specdept",function(req,res){
         console.log(err);
     }
     else {
-        res.render('specificdept.ejs', { items: items });
+      imgModel.distinct('date',{dept:req.params.specdept},(err,ite)=>{
+        if(err){
+          console.log(err);
+        }
+        else{
+
+          //console.log(ite)
+          res.render('specificdept.ejs', { items: items ,dates:ite});
+
+        }
+      });
     }
   });
 })
