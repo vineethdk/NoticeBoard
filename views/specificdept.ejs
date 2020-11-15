@@ -15,7 +15,7 @@
           <% items.forEach(function(image) { %>
             <!-- Below code is to display According to the date -->
             <% if(item.toDateString()  == image.date.toDateString() ){ %>
-            <form class="" action="/delete" method="POST">
+            <!-- <form class="" action="/delete" method="POST"> -->
 
           <div>
 
@@ -39,17 +39,21 @@
 
                       <p><%= image.answ %></p><!-- To dispaly answers -->
 
+                      <a href="/delete/<%= image._id %>/<%= image.dept %>"><button type="submit" ><i class="fas fa-trash-alt"></i></button></a>
 
-                      <button type="submit"  name="cb" value = "<%= image._id %>"><i class="fas fa-trash-alt"></i></button>
+                      <a href="/update/<%= image._id %>"><button type="submit" >UPDATE</i></button></a>
+
                       <!-- below code is for : once the item is deleted to send the name of the department from which it was deleted  -->
-                      <input type="hidden" name="selecteddept" value="<%= image.dept %>">
+                      <!-- <input type="hidden" name="selecteddept" value="<%= image.dept %>"> -->
+
+                      <!-- <button type="button" name="button">UPDATE</button> -->
 
                   </div>
 
               </div>
 
           </div>
-      </form>
+      <!-- </form> -->
 
       <!-- form to add questions from users -->
       <form class="" action="/specdept/addQues" method="post">
