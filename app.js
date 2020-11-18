@@ -183,6 +183,7 @@ app.post('/addNotice', upload.single('image'), (req, res, next) => {
       contentType: 'image/png'
     }
   }
+  console.log(imgModel)
   imgModel.create(obj, (err, item) => {
     if (err) {
       console.log(err);
