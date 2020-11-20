@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Image Uploading</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 </head>
 
 
@@ -29,7 +29,7 @@
 
         <label for="name">Image Title</label>
 
-        <input type="text" id="name" placeholder="Name" value="" name="name" >
+        <input type="text" id="name" placeholder="Name" value="" name="name">
 
       </div>
 
@@ -42,12 +42,12 @@
 
       </div>
 
-      <div >
+      <div>
         <label for="date">Date</label>
         <input type="date" id="date" placeholder="date" value="" name="dat" required>
       </div>
 
-      <div >
+      <div>
         <label for="dep">Department</label>
         <input type="text" id="dep" placeholder="department" value="" name="department" required>
       </div>
@@ -56,7 +56,7 @@
 
         <label for="image">Upload Image</label>
 
-        <input type="file" id="image" name="image" value="" multiple>
+        <input type="file" id="image" name="myfile" value="" multiple>
 
       </div>
 
@@ -71,35 +71,46 @@
   </div>
   <h1>Uplaoded Images</h1>
 
-    <div>
 
-        <% items.forEach(function(image) { %>
-          <form class="" action="/delete" method="POST">
+  <div>
 
-        <div>
+    <% if(files){ %>
+    <% files.forEach(function(file) { %>
+    <h5><%= file.name %></h5>
 
-            <div>
+    <p><%= file.desc %></p>
 
-                <img src="data:image/<%=image.img.contentType%>;base64,
+    <h5><%= file.dept %></h5>
 
-                     <%=image.img.data.toString('base64')%>">
+    <% file.img[0].data.forEach(function(name,index){ %>
 
-                <div>
 
-                    <h5><%= image.name %></h5>
+    <div class="card card-body mb-3">
 
-                    <p><%= image.desc %></p>
 
-                    <h5><%= image.dept %></h5>
-                    <button type="submit"  name="cb" value = "<%= image._id %>"><i class="fas fa-trash-alt"></i></button>
-
-                </div>
-
-            </div>
-
-        </div>
-    </form>
-        <% }) %>
-
+      <% if(file.img[0].type[index]) { %>
+      <img src="image/<%= name %>" alt="">
+      <% } else { %>
+      <a href="/files/<%= name %>" target="_blank"><%= name %></a>
+      <% } %>
+      <form method="POST" action="/files">
+        <input type="hidden" name="idea" value="<%= file.img[0].ide[index] %>">
+        <input type="hidden" name="idoffile" value="<%= file._id %>">
+        <input type="hidden" name="ind" value="<%=index%>">
+        <input type="hidden" name="dataarr" value="<%=file.img[0].data%>">
+        <input type="hidden" name="typearr" value="<%=file.img[0].type%>">
+        <input type="hidden" name="idearr" value="<%=file.img[0].ide%>">
+        <button type="submit" class="btn btn-danger btn-block mt-4">Delete</button>
+      </form>
     </div>
+
+    <% }) %>
+
+    <% }) %>
+    <% } else { %>
+    <p>No files to show</p>
+    <% } %>
+
+  </div>
+
 </body>

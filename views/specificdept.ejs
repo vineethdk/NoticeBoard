@@ -1,91 +1,119 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h1>Uplaoded Images</h1>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <h1>Uplaoded Images</h1>
+
+  <div>
+
+    <% dates.forEach(function(item) { %>
+    <h1><%= item.toDateString() %></h1>
+
+    <% files.forEach(function(file) { %>
+    <!-- Below code is to display According to the date -->
+    <% if(item.toDateString()  == file.date.toDateString() ){ %>
+    <!-- <form class="" action="/delete" method="POST"> -->
+
+    <div>
 
       <div>
 
-        <% dates.forEach(function(item) { %>
-           <h1><%= item.toDateString() %></h1>
+        <div>
 
-          <% items.forEach(function(image) { %>
-            <!-- Below code is to display According to the date -->
-            <% if(item.toDateString()  == image.date.toDateString() ){ %>
-            <!-- <form class="" action="/delete" method="POST"> -->
+          <h5><%= file.name %></h5>
 
-          <div>
+          <h5><%= file.date %></h5>
 
-              <div>
+          <p><%= file.desc %></p>
 
-                  <img src="data:image/<%=image.img.contentType%>;base64,
+          <h5><%= file.dept %></h5>
 
-                       <%=image.img.data.toString('base64')%>">
+          <p><%= file.ques %></p><!-- To dispaly questions -->
 
-                  <div>
+          <p><%= file.answ %></p><!-- To dispaly answers -->
 
-                      <h5><%= image.name %></h5>
+          <!-- display image -->
 
-                      <h5><%= image.date %></h5>
+          <% file.img[0].data.forEach(function(name,index){ %>
 
-                      <p><%= image.desc %></p>
 
-                      <h5><%= image.dept %></h5>
+          <div class="card card-body mb-3">
 
-                      <p><%= image.ques %></p><!-- To dispaly questions -->
 
-                      <p><%= image.answ %></p><!-- To dispaly answers -->
-
-                      <a href="/delete/<%= image._id %>/<%= image.dept %>"><button type="submit" ><i class="fas fa-trash-alt"></i></button></a>
-
-                      <a href="/update/<%= image._id %>"><button type="submit" >UPDATE</i></button></a>
-
-                      <!-- below code is for : once the item is deleted to send the name of the department from which it was deleted  -->
-                      <!-- <input type="hidden" name="selecteddept" value="<%= image.dept %>"> -->
-
-                      <!-- <button type="button" name="button">UPDATE</button> -->
-
-                  </div>
-
-              </div>
-
+            <% if(file.img[0].type[index]) { %>
+              <h1><%= name %></h1>
+            <img src="/image/<%= name %>" alt="">
+            <% } else { %>
+            <a href="/files/<%= name %>" target="_blank"><%= name %></a>
+            <% } %>
+            <form method="POST" action="/files">
+              <input type="hidden" name="idea" value="<%= file.img[0].ide[index] %>">
+              <input type="hidden" name="idoffile" value="<%= file._id %>">
+              <input type="hidden" name="ind" value="<%=index%>">
+              <input type="hidden" name="dataarr" value="<%=file.img[0].data%>">
+              <input type="hidden" name="typearr" value="<%=file.img[0].type%>">
+              <input type="hidden" name="idearr" value="<%=file.img[0].ide%>">
+              <input type="hidden" name="dept" value="<%=file.dept%>">
+              <button type="submit" class="btn btn-danger btn-block mt-4">Delete</button>
+            </form>
           </div>
-      <!-- </form> -->
 
-      <!-- form to add questions from users -->
-      <form class="" action="/specdept/addQues" method="post">
-        <!-- below code is for : Adding question and answer text area -->
-       <label for="desc">Question</label>
+          <% }) %>
+          <!-- till here -->
 
-       <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+          <a href="/delete/<%= file._id %>/<%= file.dept %>"><button type="submit"><i class="fas fa-trash-alt"></i></button></a>
 
-       <input type="hidden" name="idofnot" value="<%= image.id %>">
+          <a href="/update/<%= file._id %>"><button type="submit">UPDATE</i></button></a>
 
-       <input type="hidden" name="selecteddept" value="<%= image.dept %>">
+          <!-- below code is for : once the item is deleted to send the name of the department from which it was deleted  -->
+          <!-- <input type="hidden" name="selecteddept" value="<%= file.dept %>"> -->
 
-       <button type="submit">POST</button>
+          <!-- <button type="button" name="button">UPDATE</button> -->
 
-      </form>
-
-      <!-- form to add answers from users -->
-      <form class="" action="/specdept/addAns" method="post">
-        <label for="desc">Answer</label>
-
-        <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
-
-        <input type="hidden" name="idofnot" value="<%= image.id %>">
-
-        <input type="hidden" name="selecteddept" value="<%= image.dept %>">
-
-        <button type="submit">POST</button>
-      </form>
-       <% } %>
-    <% }) %>
-    <% }) %>
+        </div>
 
       </div>
-  </body>
+
+    </div>
+    <!-- </form> -->
+
+    <!-- form to add questions from users -->
+    <form class="" action="/specdept/addQues" method="post">
+      <!-- below code is for : Adding question and answer text area -->
+      <label for="desc">Question</label>
+
+      <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+      <input type="hidden" name="idofnot" value="<%= file.id %>">
+
+      <input type="hidden" name="selecteddept" value="<%= file.dept %>">
+
+      <button type="submit">POST</button>
+
+    </form>
+
+    <!-- form to add answers from users -->
+    <form class="" action="/specdept/addAns" method="post">
+      <label for="desc">Answer</label>
+
+      <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+      <input type="hidden" name="idofnot" value="<%= file.id %>">
+
+      <input type="hidden" name="selecteddept" value="<%= file.dept %>">
+
+      <button type="submit">POST</button>
+    </form>
+    <% } %>
+    <% }) %>
+    <% }) %>
+
+  </div>
+</body>
+
 </html>
