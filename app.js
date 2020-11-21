@@ -295,7 +295,33 @@ app.get("/update/:ide", function(req, res) {
 
 
 ///Below code is to show updated notice.
-app.post('/update', upload.single('image'), (req, res, next) => {
+app.post('/update', upload.array('myfile',4), (req, res, next) => {
+
+  var arr = []
+  var arr1=[]
+  var arr2=[]
+
+  req.files.forEach(function(file){
+     arr.push(file.filename)
+     arr2.push(file.id)
+     if (
+       file.contentType === 'image/jpeg' ||
+       file.contentType === 'image/png'
+     ) {
+       arr1.push(true)
+     } else {
+       arr1.push(false)
+     }
+   });
+
+   imgModel.findById(req.body.ide, function(err, result) {
+     if (err) {
+       res.send(err);
+     } else {
+       console.log(result);
+       ar = result.img[0].ide.splice(0)
+     }
+   });
 
   imgModel.findByIdAndUpdate(req.body.ide, {
     name: req.body.name,
@@ -303,14 +329,24 @@ app.post('/update', upload.single('image'), (req, res, next) => {
     dept: req.body.department,
     date: req.body.dat,
     img: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
-    }
+           data:arr,
+           type:arr1,
+           ide:arr2
+         }
   }, function(err, document) {
     if (err) {
       console.log(err)
     } else {
       console.log("successfully updated!");
+
+      ar.forEach(function(each){
+        gfs.remove({ _id: each, root: 'uploads' }, (err, gridStore) => {
+          if (err) {
+            console.log(arr)
+            return res.status(404).json({ err: err });
+          }
+      });
+    });
       //console.log(document)
       res.redirect("/notice/" + req.body.department)
     }
