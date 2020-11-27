@@ -2,7 +2,7 @@
 
 //Like importing packages.
 require('dotenv').config();
-
+const nodemailer = require('nodemailer');
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
@@ -53,8 +53,8 @@ const upload = multer({ storage });
 
 
 
-//Connecting to real Database in mongoose website.
-//mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/<dbname>', {useNewUrlParser: true, useUnifiedTopology: true});
+//Connecting to real Database in mongoose website.//just un comment the below line.
+//mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
 //Connecting to local db in our computer.
 mongoose.connect('mongodb://localhost:27017/imaDB', {
   useNewUrlParser: true,
@@ -131,12 +131,62 @@ app.post("/login", function(req, res) {
   })
 });
 
+
+app.post('/testotp',function(req,res){
+
+  console.log(req.body.ide);
+  console.log(req.body.otp);
+  console.log(ot)
+  if (ot === req.body.otp){
+    res.redirect('/wishes?valid=' + req.body.ide)
+  }
+  else{
+    var ff = mongoose.Types.ObjectId(req.body.ide)
+    User.findByIdAndRemove(ff, function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        //console.log("successfully deleted!");
+        //Code below is to retrive the images of that department after deleted
+        res.redirect("/register")
+      }
+    });
+
+  }
+
+});
+
+
 app.get("/register", function(req, res) {
   res.render("register")
 });
 
 app.post("/register", function(req, res) {
   //USER - STAFF //REMEMBER//
+  ot = Math.floor(Math.random()*(999-100+1)+100).toString()
+  let mailTransporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'Enter Your EmailID',
+      pass: 'Enter Password'
+    }
+  });
+
+  let mailDetails = {
+    from: 'Enter Your EmailID',
+    to: req.body.username,
+    subject: 'Test mail',
+    text: ot
+  };
+
+  mailTransporter.sendMail(mailDetails, function(err, data) {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log("Mail sent!!! Check Your Mail");
+    }
+  });
+
   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
     const newUser = new User({
       fname: req.body.fname,
@@ -156,7 +206,8 @@ app.post("/register", function(req, res) {
         if (foundItem.length === 0) {
           newUser.save(function(err) {
             if (!err) {
-              res.redirect('/wishes?valid=' + newUser._id)
+              res.render('otpcheck',{ido:newUser._id})
+              //res.redirect('/wishes?valid=' + newUser._id)
             } else {
               console.log(err);
             }

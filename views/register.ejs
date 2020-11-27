@@ -34,15 +34,16 @@
               <input type="text" class="form-control" name="dname">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id ="emaili">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="username">
+              <input type="email" class="form-control" name="username" pattern="^[a-zA-Z0-9._-]+@[rvce]+\.[edu]+\.[in]{2}$" title="Please enter rvce mail id">
             </div>
+
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" class="form-control" name="password">
             </div>
-            <button type="submit" class="btn btn-dark">Register</button>
+            <button type="submit" class="btn btn-dark">Send OTP</button>
           </form>
 
         </div>
