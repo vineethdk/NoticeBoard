@@ -82,6 +82,7 @@ var imageSchema = new mongoose.Schema({
     type:[],
     ide:[]
   },
+  uofques:[],
   ques: [],
   answ: []
 });
@@ -99,6 +100,7 @@ const userSchema = new mongoose.Schema({
   staffid: String,
   dept: String,
   email: String,
+  typeofuser:String,
   password: String
 });
 
@@ -114,12 +116,17 @@ app.get("/login", function(req, res) {
 });
 
 app.post("/login", function(req, res) {
+  tou = '';//To idetify the current type of user.....
   User.findOne({
     email: req.body.username
   }, function(err, foundOne) {
     if (foundOne) {
       bcrypt.compare(req.body.password, foundOne.password, function(err, result) {
         if (result === true) {
+          currentuseremailid = req.body.username;
+          tou = foundOne.typeofuser;
+          // console.log(tou)
+          // app.locals.toue = 'ff';
           res.redirect('/wishes?valid=' + foundOne._id)
         } else {
           res.status(404).send("USERNAME OR PASSWORD IS WORNG CHECK ONCE AGAIN");
@@ -136,8 +143,10 @@ app.post('/testotp',function(req,res){
 
   console.log(req.body.ide);
   console.log(req.body.otp);
-  console.log(ot)
+  console.log(currentuseremailid)
+
   if (ot === req.body.otp){
+
     res.redirect('/wishes?valid=' + req.body.ide)
   }
   else{
@@ -148,7 +157,9 @@ app.post('/testotp',function(req,res){
       } else {
         //console.log("successfully deleted!");
         //Code below is to retrive the images of that department after deleted
-        res.redirect("/register")
+        currentuseremailid = '' ;
+        tou = '';
+        res.redirect("/register");
       }
     });
 
@@ -163,17 +174,30 @@ app.get("/register", function(req, res) {
 
 app.post("/register", function(req, res) {
   //USER - STAFF //REMEMBER//
+  tou = '';
+  currentuseremailid =  req.body.username;//GLOBAL
+  var temp = ''
+
+  const paragraph = currentuseremailid;
+  const regex = '^[a-zA-Z0-9]+\.[a-zA-Z]{2}[0-9]{2}@[rvce]+\.[edu]+\.[in]{2}$';
+  const found = paragraph.match(regex);
+  if(found===null){
+    temp = 'staff'
+  }else{
+    temp = 'student'
+  }
+
   ot = Math.floor(Math.random()*(999-100+1)+100).toString()
   let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'Enter Your EmailID',
-      pass: 'Enter Password'
+      user: 'vineethdk31@gmail.com',
+      pass: 'thisisme@31'
     }
   });
 
   let mailDetails = {
-    from: 'Enter Your EmailID',
+    from: 'vineethdk31@gmail.com',
     to: req.body.username,
     subject: 'Test mail',
     text: ot
@@ -195,6 +219,7 @@ app.post("/register", function(req, res) {
       staffid: req.body.sid,
       dept: req.body.dname,
       email: req.body.username,
+      typeofuser:temp,
       password: hash
     });
 
@@ -206,6 +231,7 @@ app.post("/register", function(req, res) {
         if (foundItem.length === 0) {
           newUser.save(function(err) {
             if (!err) {
+              tou = newUser.typeofuser;
               res.render('otpcheck',{ido:newUser._id})
               //res.redirect('/wishes?valid=' + newUser._id)
             } else {
@@ -417,7 +443,8 @@ app.get("/notice", function(req, res) {
 })
 
 app.post("/notice/specdept", function(req, res) {
-  //console.log(req.body.dep)
+  // console.log(tou)
+  // console.log(app.locals)
   imgModel.find({
     dept: req.body.dep
   }, (err, items) => {
@@ -432,10 +459,11 @@ app.post("/notice/specdept", function(req, res) {
           console.log(err);
         } else {
 
-          //console.log(ite)
+          console.log(tou)
           res.render('specificdept.ejs', {
             files: items,
-            dates: ite
+            dates: ite,
+            tou:tou
           });
 
         }
@@ -450,9 +478,10 @@ app.get("/wishes", function(req, res) {
   //console.log(passedVariable)
 
   User.findById(passedVariable, function(err, item) {
+    //console.log(typeofuser)
     if (item != null) {
       res.render("admin.ejs", {
-        item: item
+        item: item,
       });
     } else {
       console.log("No such User")
@@ -477,7 +506,8 @@ app.post("/specdept/addQues", function(req, res) {
 
   imgModel.findByIdAndUpdate(req.body.idofnot, {
       "$push": {
-        "ques": req.body.desc
+        "ques": req.body.desc,
+        "uofques":currentuseremailid
       }
     },
     function(err, docs) {
@@ -506,10 +536,11 @@ app.get("/notice/:specdept", function(req, res) {
           console.log(err);
         } else {
 
-          //console.log(ite)
+          console.log(tou)
           res.render('specificdept.ejs', {
             files: items,
-            dates: ite
+            dates: ite,
+            tou:tou
           });
 
         }
