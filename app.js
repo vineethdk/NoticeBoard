@@ -108,11 +108,11 @@ const User = new mongoose.model("User", userSchema)
 
 
 app.get("/", function(req, res) {
-  res.render("home")
+  res.render("home",{info:"ilu"})
 });
 
 app.get("/login", function(req, res) {
-  res.render("login")
+  res.render("login",{info:"ilu"})
 });
 
 app.post("/login", function(req, res) {
@@ -141,9 +141,9 @@ app.post("/login", function(req, res) {
 
 app.post('/testotp',function(req,res){
 
-  console.log(req.body.ide);
-  console.log(req.body.otp);
-  console.log(currentuseremailid)
+  // console.log(req.body.ide);
+  // console.log(req.body.otp);
+  // console.log(currentuseremailid)
 
   if (ot === req.body.otp){
 
@@ -187,7 +187,7 @@ app.post("/register", function(req, res) {
     temp = 'student'
   }
 
-  ot = Math.floor(Math.random()*(999-100+1)+100).toString()
+  ot = Math.floor(Math.random()*(999-100+1)+100).toString();
   let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -350,6 +350,22 @@ app.get("/delete/:ide/:dept", function(req, res) {
     });
       //Code below is to retrive the images of that department after deleted
       res.redirect("/notice/" + req.params.dept)
+    }
+  });
+});
+
+
+
+app.get("/updateuser/:ide", function(req, res) {
+  //console.log(req.params.ide)
+  User.findById(req.params.ide, function(err, document) {
+    if (err) {
+      console.log(err);
+    } else {
+      //
+      res.render("updateuserpage", {
+        data: document
+      })
     }
   });
 });

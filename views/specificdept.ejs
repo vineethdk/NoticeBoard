@@ -11,7 +11,7 @@
 
   <div>
 
-    <% dates.forEach(function(item) { %>
+    <% dates.slice().reverse().forEach(function(item) { %>
     <h1><%= item.toDateString() %></h1>
 
     <% files.forEach(function(file) { %>

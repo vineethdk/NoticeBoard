@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Update details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+
+
+<body>
+
+  <h1>UPDATE A USER!!!!</h1>
+
+  <hr>
+
+  <div>
+
+    <form action="/updateuser" method="POST" enctype="multipart/form-data">
+
+      <div class="form-group">
+        <label for="text">First Name</label>
+        <input type="text" class="form-control" name="fname" value = "<%= data.fname %>">
+      </div>
+
+      <div class="form-group">
+        <label for="text">Last Name</label>
+        <input type="text" class="form-control" name="lname" value = "<%= data.lname %>">
+      </div>
+
+      <div class="form-group">
+        <label for="text">User Name</label>
+        <input type="text" class="form-control" name="uname" value = "<%= data.uname %>">
+      </div>
+
+      <div class="form-group">
+        <label for="text">Staff id / USN</label>
+        <input type="text" class="form-control" name="sid" value = "<%= data.staffid %>">
+      </div>
+
+      <div class="form-group">
+        <label for="text">Department</label>
+        <input type="text" class="form-control" name="dname" value = "<%= data.dept %>">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Enter Old Password</label>
+        <input type="password" class="form-control" name="oldpassword">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Enter Old Password</label>
+        <input type="password" class="form-control" name="newpassword">
+      </div>
+
+      <button type="submit">Submit</button>
+
+    </form>
+
+  </div>
+
+</body>

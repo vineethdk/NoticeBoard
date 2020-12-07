@@ -3,20 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>WISH</title>
 </head>
+<div class="">
 
-<body>
-  <div class="card">
-    <div class="container">
-      <p><%=  item.fname  %></p>
-      <p><%=  item.lname  %></p>
-      <p><%=  item.uname  %></p>
-      <p><%=  item.usn  %></p>
-      <p><%=  item.dept  %></p>
-      <p><%=  item.email  %></p>
-    </div>
-  </div>
+
   <form class="" action="/wishes" method="POST">
     <button type="submit" name="wish" value="shownotice">Show Notice</button>
     <% if (item.typeofuser === "staff"){ %>
@@ -25,6 +16,7 @@
     <button type="submit" name="wish" value="addnotice" disabled>Add Notice</button>
     <% } %>
   </form>
+  </div>
 </body>
 
 </html>

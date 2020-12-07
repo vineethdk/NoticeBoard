@@ -49,7 +49,21 @@
 
       <div>
         <label for="dep">Department</label>
-        <input type="text" id="dep" placeholder="department" value="" name="department" required>
+        <!-- <input type="text" id="dep" placeholder="department" value="" name="department" required> -->
+        <select name="department" id="department">
+          <option value="ISE">ISE</option>
+          <option value="CSE">CSE</option>
+          <option value="TLE">TLE</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="CVE">CVE</option>
+          <option value="ME">ME</option>
+          <option value="ASE">ASE</option>
+          <option value="BT">BT</option>
+          <option value="IEM">IEM</option>
+          <option value="CHE">CHE</option>
+          <option value="EIE">EIE</option>
+        </select>
       </div>
 
       <div>
@@ -69,48 +83,4 @@
     </form>
 
   </div>
-  <h1>Uplaoded Images</h1>
-
-
-  <div>
-
-    <% if(files){ %>
-    <% files.forEach(function(file) { %>
-    <h5><%= file.name %></h5>
-
-    <p><%= file.desc %></p>
-
-    <h5><%= file.dept %></h5>
-
-    <% file.img[0].data.forEach(function(name,index){ %>
-
-
-    <div class="card card-body mb-3">
-
-
-      <% if(file.img[0].type[index]) { %>
-      <img src="image/<%= name %>" alt="">
-      <% } else { %>
-      <a href="/files/<%= name %>" target="_blank"><%= name %></a>
-      <% } %>
-      <form method="POST" action="/files">
-        <input type="hidden" name="idea" value="<%= file.img[0].ide[index] %>">
-        <input type="hidden" name="idoffile" value="<%= file._id %>">
-        <input type="hidden" name="ind" value="<%=index%>">
-        <input type="hidden" name="dataarr" value="<%=file.img[0].data%>">
-        <input type="hidden" name="typearr" value="<%=file.img[0].type%>">
-        <input type="hidden" name="idearr" value="<%=file.img[0].ide%>">
-        <button type="submit" class="btn btn-danger btn-block mt-4">Delete</button>
-      </form>
-    </div>
-
-    <% }) %>
-
-    <% }) %>
-    <% } else { %>
-    <p>No files to show</p>
-    <% } %>
-
-  </div>
-
 </body>
