@@ -108,11 +108,11 @@ const User = new mongoose.model("User", userSchema)
 
 
 app.get("/", function(req, res) {
-  res.render("home",{info:"ilu"})
+  res.render("home")
 });
 
 app.get("/login", function(req, res) {
-  res.render("login",{info:"ilu"})
+  res.render("login")
 });
 
 app.post("/login", function(req, res) {
@@ -135,7 +135,7 @@ app.post("/login", function(req, res) {
     } else {
       console.log("Not yet registered");
     }
-  })
+  });
 });
 
 
@@ -192,7 +192,7 @@ app.post("/register", function(req, res) {
     service: 'gmail',
     auth: {
       user: 'vineethdk31@gmail.com',
-      pass: 'enter your password'
+      pass: 'Enter Your Password'
     }
   });
 
@@ -266,7 +266,8 @@ app.get("/addNotice", function(req, res) {
       console.log(err);
     } else {
       res.render('index.ejs', {
-        files: items
+        files: items,
+        item:globalinfoofuser
       });
     }
   });
@@ -277,6 +278,7 @@ app.get("/addNotice", function(req, res) {
 //and server picks it up that is in the form and posts to the screen after user hits submit butto or something.
 app.post('/addNotice', upload.array('myfile',4), (req, res, next) => {
 
+console.log(globalinfoofuser)
 
   var arr = []
   var arr1=[]
@@ -372,6 +374,68 @@ app.get("/updateuser/:ide", function(req, res) {
 
 
 
+app.post("/updateuser", function(req, res) {
+    //console.log(req.body)
+    User.findById(
+      req.body.ide
+    , function(err, foundOne) {
+      if (foundOne) {
+        bcrypt.compare(req.body.oldpassword, foundOne.password, function(err, result) {
+          if (result === true) {
+            if (req.body.newpassword===""){
+              User.findByIdAndUpdate(req.body.ide, {
+                fname: req.body.fname,
+                lname: req.body.lname,
+                uname: req.body.uname,
+                staffid: req.body.sid,
+                dept: req.body.dname,
+              }, function(err, document) {
+                if (err) {
+                  console.log(err)
+                } else {
+                  console.log("successfully updated!");
+                  res.redirect('/wishes?valid=' + req.body.ide);
+                }
+              });
+            } else {
+
+
+              bcrypt.hash(req.body.newpassword, saltRounds, function(err, hash) {
+
+                User.findByIdAndUpdate(req.body.ide, {
+                  fname: req.body.fname,
+                  lname: req.body.lname,
+                  uname: req.body.uname,
+                  staffid: req.body.sid,
+                  dept: req.body.dname,
+                  password: hash
+                }, function(err, document) {
+                  if (err) {
+                    console.log(err)
+                  } else {
+                    console.log("successfully updated!");
+                    res.redirect('/wishes?valid=' + req.body.ide);
+                  }
+                });
+
+                });
+
+
+
+            }
+          } else {
+            res.status(404).send("PASSWORD ENTERED IS WORNG CHECK ONCE AGAIN");
+          }
+        });
+      } else {
+        console.log("Not yet registered");
+      }
+    });
+
+});
+
+
+
 app.get("/update/:ide", function(req, res) {
   //console.log(req.params.ide)
   imgModel.findById(req.params.ide, function(err, document) {
@@ -454,7 +518,8 @@ app.post('/update', upload.array('myfile',4), (req, res, next) => {
 
 app.get("/notice", function(req, res) {
   res.render("depar.ejs", {
-    files: []
+    files: [],
+    item:globalinfoofuser
   })
 })
 
@@ -479,7 +544,8 @@ app.post("/notice/specdept", function(req, res) {
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
-            tou:tou
+            tou:tou,
+            item:globalinfoofuser
           });
 
         }
@@ -494,6 +560,8 @@ app.get("/wishes", function(req, res) {
   //console.log(passedVariable)
 
   User.findById(passedVariable, function(err, item) {
+
+    globalinfoofuser = item;//GLOBAL INFO TO ACCESS USER INFO IN ALL THE ROUTES.
     //console.log(typeofuser)
     if (item != null) {
       res.render("admin.ejs", {
@@ -556,7 +624,8 @@ app.get("/notice/:specdept", function(req, res) {
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
-            tou:tou
+            tou:tou,
+            item:globalinfoofuser
           });
 
         }

@@ -23,7 +23,7 @@
 
   <div>
 
-    <form action="/updateuser" method="POST" enctype="multipart/form-data">
+    <form action="/updateuser" method="POST">
 
       <div class="form-group">
         <label for="text">First Name</label>
@@ -52,14 +52,15 @@
 
       <div class="form-group">
         <label for="password">Enter Old Password</label>
-        <input type="password" class="form-control" name="oldpassword">
+        <input type="password" class="form-control" name="oldpassword" required>
       </div>
 
       <div class="form-group">
-        <label for="password">Enter Old Password</label>
+        <label for="password">Enter New Password /Leave Blank</label>
         <input type="password" class="form-control" name="newpassword">
       </div>
 
+       <input type="hidden" name="ide" value="<%= data.id %>">
       <button type="submit">Submit</button>
 
     </form>
