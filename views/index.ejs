@@ -1,70 +1,77 @@
 <%- include('partials/header') %>
 
-  <h1>To Upload Image on mongoDB</h1>
+<h1>Add Notice !!</h1>
 
-  <hr>
+<hr>
 
-  <div>
+<div class=" flex-parent jc-center ">
 
-    <form action="/addNotice" method="POST" enctype="multipart/form-data">
+  <form action="/addNotice" method="POST" enctype="multipart/form-data">
 
-      <div>
+    <div>
 
-        <label for="name">Image Title</label>
+      <label for="name">Notice Title</label>
 
-        <input type="text" id="name" placeholder="Name" value="" name="name">
+      <input class="form-control" type="text" id="name" placeholder="Name" value="" name="name">
 
-      </div>
+    </div>
 
-      <div>
+    <div>
 
-        <label for="desc">Image Description</label>
+      <label for="desc">Image Description</label>
 
-        <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+      <textarea class="form-control" id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
 
 
-      </div>
+    </div>
 
-      <div>
-        <label for="date">Date</label>
-        <input type="date" id="date" placeholder="date" value="" name="dat" required>
-      </div>
+    <div>
+      <label for="date">Date</label>
+      <input class="form-control" type="date" id="date" placeholder="date" value="" name="dat" required>
+    </div>
 
-      <div>
-        <label for="dep">Department</label>
-        <!-- <input type="text" id="dep" placeholder="department" value="" name="department" required> -->
-        <select name="department" id="department">
-          <option value="ISE">ISE</option>
-          <option value="CSE">CSE</option>
-          <option value="TLE">TLE</option>
-          <option value="ECE">ECE</option>
-          <option value="EEE">EEE</option>
-          <option value="CVE">CVE</option>
-          <option value="ME">ME</option>
-          <option value="ASE">ASE</option>
-          <option value="BT">BT</option>
-          <option value="IEM">IEM</option>
-          <option value="CHE">CHE</option>
-          <option value="EIE">EIE</option>
-        </select>
-      </div>
+    <div>
+      <label for="dep">Department</label>
+      <!-- <input type="text" id="dep" placeholder="department" value="" name="department" required> -->
+      <select class="form-control" name="department" id="department">
+        <option value="ISE">ISE</option>
+        <option value="CSE">CSE</option>
+        <option value="TLE">TLE</option>
+        <option value="ECE">ECE</option>
+        <option value="EEE">EEE</option>
+        <option value="CVE">CVE</option>
+        <option value="ME">ME</option>
+        <option value="ASE">ASE</option>
+        <option value="BT">BT</option>
+        <option value="IEM">IEM</option>
+        <option value="CHE">CHE</option>
+        <option value="EIE">EIE</option>
+      </select>
+    </div>
+    <br>
+    <div>
 
-      <div>
+      <label for="image">Upload Image</label>
 
-        <label for="image">Upload Image</label>
+      <input type="file" id="image" name="myfile" value="" multiple>
 
-        <input type="file" id="image" name="myfile" value="" multiple>
+    </div>
+    <br>
 
-      </div>
+      <button class="updatebtn btn btn-outline-dark shownoticebtn" type="submit">Submit</button>
 
-      <div>
 
-        <button type="submit">Submit</button>
+  </form>
 
-      </div>
 
-    </form>
-    <a href="/notice"><button type="submit">SHOW NOTICE</button></a>
+</div>
 
-  </div>
+<div class="row-centered">
+  <a href="/notice"><button class="updatebtn btn btn-dark shownoticebtn" type="submit">SHOW NOTICE</button></a>
+</div>
+
+
+
+
+
 </body>

@@ -13,3 +13,62 @@ body {
   color: #fff;
   background-color: #000;
 }
+/* BELOW CODE IS FOR NAVIGATION BAR */
+.headerfile {
+  display: inline;
+}
+
+.updatebtn {
+  padding-left:2em;
+  padding-right:2em;
+  padding-top:1em;
+  padding-bottom:1em;
+}
+
+
+/* BELOW CODE IS FOR NAVIGATION BAR */
+
+
+/* BELOW CODE IS FOR ADMIN PAGE */
+.adminpage {
+  margin: 10em;
+}
+
+.adminbutton {
+  padding: 5em;
+}
+
+.flex-parent {
+  display: flex;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+/* ABOVE CODE IS FOR ADMIN PAGE */
+
+/* BELOW CODE IS FOR INDEX PAGE */
+.row-centered {
+   text-align:center;
+   margin-top: 3em;
+ }
+
+ .shownoticebtn{
+   width:24.84rem;
+   /* display: block; */
+
+ }
+
+ /* ABOVE CODE IS FOR INDEX PAGE */
+
+
+ /*BELOW CODE IS FOR DEPAR PAGE */
+.palcemarg{
+  margin: 1rem;
+  border-radius: 8px;
+  background-color: #944EDC;
+  color: white;
+}
+
+  /*ABOVE CODE IS FOR DEPAR PAGE */

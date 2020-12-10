@@ -16,29 +16,27 @@
   <div class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
       <li class="nav-item active">
-        <a class="nav-link" href="/wishes?valid=<%= item._id %>">HOME <span class="sr-only">(current)</span></a>
-        <a class="nav-link" href="/">LOGOUT <span class="sr-only">(current)</span></a>
       </li>
       <div class="bg-dark p-4">
         <!-- <h5 class="text-white h4">Collapsed content</h5>
       <span class="text-muted">Toggleable via the navbar brand.</span> -->
-        <div class="card">
-          <div class="container">
-            <p><%=  item.fname  %></p>
+        <div class="card bg-dark p-4">
+          <div class="container text-white h6">
+            <p class="text-white h4"><%=  item.fname  %></p>
             <p><%=  item.lname  %></p>
             <p><%=  item.uname  %></p>
             <p><%=  item.usn  %></p>
             <p><%=  item.dept  %></p>
             <p><%=  item.email  %></p>
-            <a href="/updateuser/<%= item._id %>"><button type="submit">UPDATE</i></button></a>
+            <a  href="/updateuser/<%= item._id %>"><button class = "updatebtn btn btn-light" type="submit">Update</i></button></a>
           </div>
         </div>
       </div>
     </div>
     <nav class="navbar -top navbar-dark bg-dark">
       <li class="nav-item active">
-        <a class="nav-link" href="/wishes?valid=<%= item._id %>">HOME <span class="sr-only">(current)</span></a>
-        <a class="nav-link" href="/">LOGOUT <span class="sr-only">(current)</span></a>
+        <a class="headerfile nav-link " href="/wishes?valid=<%= item._id %>">HOME <span class="sr-only">(current)</span></a>
+        <a class="headerfile nav-link " href="/">LOGOUT <span class="sr-only">(current)</span></a>
       </li>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">

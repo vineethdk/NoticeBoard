@@ -192,7 +192,7 @@ app.post("/register", function(req, res) {
     service: 'gmail',
     auth: {
       user: 'vineethdk31@gmail.com',
-      pass: 'Enter Your Password'
+      pass: 'thisisme@31'
     }
   });
 

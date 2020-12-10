@@ -1,16 +1,15 @@
 <%- include('partials/header') %>
-<div class="">
+<div class="flex-parent jc-center">
 
 
-  <form class="" action="/wishes" method="POST">
-    <button type="submit" name="wish" value="shownotice">Show Notice</button>
+  <form class="adminpage" action="/wishes" method="POST">
+    <button class="adminbutton btn btn-dark" type="submit" name="wish" value="shownotice">Show Notice</button>
     <% if (item.typeofuser === "staff"){ %>
-    <button type="submit" name="wish" value="addnotice">Add Notice</button>
+    <button class="adminbutton btn btn-light" type="submit" name="wish" value="addnotice">Add Notice</button>
     <% } else { %>
-    <button type="submit" name="wish" value="addnotice" disabled>Add Notice</button>
+    <button class="adminbutton btn btn-light" type="submit" name="wish" value="addnotice" disabled>Add Notice</button>
     <% } %>
   </form>
-  <a href="/"><button type="submit">LOGOUT</button></a>
   </div>
 </body>
 
