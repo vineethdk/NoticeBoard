@@ -19,6 +19,7 @@ const methodOverride = require('method-override');
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+
 // Related to gridfs from here.
 const conn = mongoose.createConnection('mongodb://localhost:27017/imaDB', {
   useNewUrlParser: true,
@@ -129,7 +130,7 @@ app.post("/login", function(req, res) {
           // app.locals.toue = 'ff';
           res.redirect('/wishes?valid=' + foundOne._id)
         } else {
-          res.status(404).send("USERNAME OR PASSWORD IS WORNG CHECK ONCE AGAIN");
+          res.status(404).send("<style> body {background-color: #f2dede;} h2 {text-align: center; margin: 22rem}  </style> <h2 style='color:	#c3737b;'> USERNAME OR PASSWORD IS WORNG CHECK ONCE AGAIN</h2>");
         }
       });
     } else {
@@ -239,7 +240,7 @@ app.post("/register", function(req, res) {
             }
           });
         } else {
-          res.status(404).send("The specified email is already registered please enter different one!");
+          res.status(404).send("<style> body {background-color: #f2dede;} h2 {text-align: center; margin: 22rem}  </style> <h2 style='color:	#c3737b;'>The specified email is already registered please enter different one!</h2>");
         }
       }
     });
@@ -424,7 +425,7 @@ app.post("/updateuser", function(req, res) {
 
             }
           } else {
-            res.status(404).send("PASSWORD ENTERED IS WORNG CHECK ONCE AGAIN");
+            res.status(404).send("<style> body {background-color: #f2dede;} h2 {text-align: center; margin: 22rem}  </style> <h2 style='color:	#c3737b;'>PASSWORD ENTERED IS WORNG CHECK ONCE AGAIN</h2>");
           }
         });
       } else {

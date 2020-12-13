@@ -1,5 +1,12 @@
 body {
   background-color: #E8ECEF;
+  background-color: grey;
+  background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+}
+
+.back{
+  background-color: grey;
+  background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
 }
 
 .centered {
@@ -38,6 +45,11 @@ body {
   padding: 5em;
 }
 
+.imageadd{
+  /* background-color: #646460; */
+  background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+}
+
 .flex-parent {
   display: flex;
 }
@@ -67,8 +79,37 @@ body {
 .palcemarg{
   margin: 1rem;
   border-radius: 8px;
-  background-color: #944EDC;
-  color: white;
+  background-color:#335159;
+  /* background-color: white; */
+  /* color: black; */
 }
 
   /*ABOVE CODE IS FOR DEPAR PAGE */
+
+
+/*BELOW CODE IS FOR OTPCHECK PAGE */
+
+.center {
+  position: absolute;
+left: 50%;
+top: 60%;
+
+transform: translate(-50%, -50%);
+
+padding: 10px;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  /* border: 3px solid green; */
+  padding: 10px;
+}
+
+.martop{
+  margin-top: 1rem;
+}
+
+/*ABOVE CODE IS FOR OTPCHECK PAGE */
+
+.ff{
+  color: blue;
+}

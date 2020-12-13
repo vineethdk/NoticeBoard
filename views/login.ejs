@@ -18,18 +18,18 @@
 
   <div class="row">
     <div class="col-sm-8">
-      <div class="card">
+      <div class="card imageadd">
         <div class="card-body">
 
           <!-- Makes POST request to /login route -->
           <form action="/login" method="POST">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="username" pattern="^[a-zA-Z0-9._-]+@[rvce]+\.[edu]+\.[in]{2}$" title="Please enter rvce mail id">
+              <input type="email" class="form-control" name="username" pattern="^[a-zA-Z0-9._-]+@[rvce]+\.[edu]+\.[in]{2}$" title="Please enter rvce mail id" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input type="password" class="form-control" name="password" required>
             </div>
             <button type="submit" class="btn btn-dark">Login</button>
           </form>
