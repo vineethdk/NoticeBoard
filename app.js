@@ -21,7 +21,7 @@ const saltRounds = 10;
 
 
 // Related to gridfs from here.
-const conn = mongoose.createConnection('mongodb://localhost:27017/imaDB', {
+const conn = mongoose.createConnection('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -36,7 +36,7 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-  url: 'mongodb://localhost:27017/imaDB',
+  url: 'mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB',
   file: (req, file) => {
     return new Promise((resolve, reject) => {
         const filename = file.originalname;
@@ -55,12 +55,12 @@ const upload = multer({ storage });
 
 
 //Connecting to real Database in mongoose website.//just un comment the below line.
-//mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
 //Connecting to local db in our computer.
-mongoose.connect('mongodb://localhost:27017/imaDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+// mongoose.connect('mongodb://localhost:27017/imaDB', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// });
 
 const app = express();
 
@@ -134,7 +134,7 @@ app.post("/login", function(req, res) {
         }
       });
     } else {
-      console.log("Not yet registered");
+      res.status(404).send("<style> body {background-color: #f2dede;} h2 {text-align: center; margin: 22rem}  </style> <h2 style='color:	#c3737b;'> NOT YET REGISTERED</h2>");
     }
   });
 });
@@ -192,13 +192,13 @@ app.post("/register", function(req, res) {
   let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'vineethdk31@gmail.com',
-      pass: 'thisisme@31'
+      user: 'jamesbond31031999@gmail.com',
+      pass: 'hteenivdk'
     }
   });
 
   let mailDetails = {
-    from: 'vineethdk31@gmail.com',
+    from: 'jamesbond31031999@gmail.com',
     to: req.body.username,
     subject: 'Test mail',
     text: ot
@@ -228,7 +228,7 @@ app.post("/register", function(req, res) {
       email: req.body.username
     }, function(err, foundItem) {
       if (!err) {
-        console.log(foundItem)
+        //console.log(foundItem)
         if (foundItem.length === 0) {
           newUser.save(function(err) {
             if (!err) {
@@ -274,7 +274,6 @@ app.get("/addNotice", function(req, res) {
   });
 });
 
-
 //First posts it into the location spcified in action in html like "/" and
 //and server picks it up that is in the form and posts to the screen after user hits submit butto or something.
 app.post('/addNotice', upload.array('myfile',4), (req, res, next) => {
@@ -310,7 +309,7 @@ console.log(globalinfoofuser)
            ide:arr2
          }
   }
-  console.log(imgModel)
+  //console.log(imgModel)
   imgModel.create(obj, (err, item) => {
     if (err) {
       console.log(err);
@@ -330,7 +329,7 @@ app.get("/delete/:ide/:dept", function(req, res) {
     if (err) {
       res.send(err);
     } else {
-      console.log(result);
+      //console.log(result);
       ar = result.img[0].ide.splice(0)
     }
   });
@@ -541,7 +540,7 @@ app.post("/notice/specdept", function(req, res) {
           console.log(err);
         } else {
 
-          console.log(tou)
+        //  console.log(items)
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
@@ -621,7 +620,7 @@ app.get("/notice/:specdept", function(req, res) {
           console.log(err);
         } else {
 
-          console.log(tou)
+          console.log(items)
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
@@ -751,7 +750,28 @@ imgModel.findByIdAndUpdate(req.body.idoffile, { img : {data: arr , type: arr1 , 
   });
 });
 
+app.get('/imageonbig/:filename', (req, res) => {
+  //console.log("iamhere")
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No file exists'
+      });
+    }
 
+    // Check if image
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+      // Read output to browser
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+    } else {
+      res.status(404).json({
+        err: 'Not an image'
+      });
+    }
+  });
+});
 
 // @route GET /image/:filename
 // @desc Display Image

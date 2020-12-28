@@ -3,11 +3,11 @@
 
 
   <form class="adminpage" action="/wishes" method="POST">
-    <button class="adminbutton btn btn-dark" type="submit" name="wish" value="shownotice">Show Notice</button>
+    <button class="adminbutton btn btn-dark" type="submit" name="wish" value="shownotice">SHOW NOTICE</button>
     <% if (item.typeofuser === "staff"){ %>
-    <button class="adminbutton btn btn-light imageadd" type="submit" name="wish" value="addnotice">Add Notice</button>
+    <button class="adminbutton btn btn-light imageadd" type="submit" name="wish" value="addnotice">ADD NOTICE</button>
     <% } else { %>
-    <button class="adminbutton btn btn-light imageadd" type="submit" name="wish" value="addnotice" disabled>Add Notice</button>
+    <button class="adminbutton btn btn-light imageadd" type="submit" name="wish" value="addnotice" disabled>ADD NOTICE</button>
     <% } %>
   </form>
   </div>

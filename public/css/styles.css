@@ -1,4 +1,5 @@
 body {
+  font-family: "Times New Roman", Times, serif;
   background-color: #E8ECEF;
   background-color: grey;
   background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
@@ -23,6 +24,7 @@ body {
 /* BELOW CODE IS FOR NAVIGATION BAR */
 .headerfile {
   display: inline;
+  /* padding: 10px; */
 }
 
 .updatebtn {
@@ -65,6 +67,7 @@ body {
    text-align:center;
    margin-top: 3em;
  }
+
 
  .shownoticebtn{
    width:24.84rem;
@@ -113,3 +116,23 @@ padding: 10px;
 .ff{
   color: blue;
 }
+
+.row-centered1 {
+   text-align:center;
+   /* margin-top: 3em; */
+ }
+
+ .forfiles{
+   margin-top: 6rem;
+ }
+
+ .cardcolor{
+   background-color: #697D82  ;
+   background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+ }
+
+ .butcolor{
+   background-color: #747474  ;
+   background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+   margin: 1rem;
+ }
