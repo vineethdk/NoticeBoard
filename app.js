@@ -21,7 +21,7 @@ const saltRounds = 10;
 
 
 // Related to gridfs from here.
-const conn = mongoose.createConnection('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {
+const conn = mongoose.createConnection('mongodb://localhost:27017/imaDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -36,7 +36,7 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-  url: 'mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB',
+  url: 'mongodb://localhost:27017/imaDB',
   file: (req, file) => {
     return new Promise((resolve, reject) => {
         const filename = file.originalname;
@@ -55,12 +55,12 @@ const upload = multer({ storage });
 
 
 //Connecting to real Database in mongoose website.//just un comment the below line.
-mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
 //Connecting to local db in our computer.
-// mongoose.connect('mongodb://localhost:27017/imaDB', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+mongoose.connect('mongodb://localhost:27017/imaDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const app = express();
 
@@ -74,6 +74,7 @@ app.use(express.static("public")); //folders like css and images and sounds etc.
 app.set('view engine', 'ejs'); //install ejs also.
 
 var imageSchema = new mongoose.Schema({
+  notno:Number,
   name: String,
   desc: String,
   dept: String,
@@ -84,6 +85,8 @@ var imageSchema = new mongoose.Schema({
     ide:[]
   },
   uofques:[],
+  tofques:[],
+  justtime:[],
   ques: [],
   answ: []
 });
@@ -297,27 +300,38 @@ console.log(globalinfoofuser)
      }
    });
 
+   noticeno=0;
 
-  var obj = {
-    name: req.body.name,
-    desc: req.body.desc,
-    dept: req.body.department,
-    date: req.body.dat,
-    img: {
-           data:arr,
-           type:arr1,
-           ide:arr2
+   imgModel.find({dept: req.body.department}, (err, items) => {
+     if (err) {
+       console.log(err);
+     } else {
+       noticeno = items.length+1;
+       var obj = {
+         notno: noticeno,
+         name: req.body.name,
+         desc: req.body.desc,
+         dept: req.body.department,
+         date: req.body.dat,
+         img: {
+                data:arr,
+                type:arr1,
+                ide:arr2
+              }
+       }
+       //console.log(imgModel)
+       imgModel.create(obj, (err, item) => {
+         if (err) {
+           console.log(err);
+         } else {
+
+           res.redirect('/addNotice');
          }
-  }
-  //console.log(imgModel)
-  imgModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-    } else {
-      // item.save();
-      res.redirect('/addNotice');
-    }
-  });
+       });
+     }
+   });
+   //console.log(noticeno)
+
 });
 
 
@@ -345,7 +359,7 @@ app.get("/delete/:ide/:dept", function(req, res) {
       ar.forEach(function(each){
         gfs.remove({ _id: each, root: 'uploads' }, (err, gridStore) => {
           if (err) {
-            console.log(arr)
+            console.log(err)
             return res.status(404).json({ err: err });
           }
       });
@@ -475,7 +489,7 @@ app.post('/update', upload.array('myfile',4), (req, res, next) => {
      if (err) {
        res.send(err);
      } else {
-       console.log(result);
+       //console.log(result);
        ar = result.img[0].ide.splice(0)
      }
    });
@@ -499,7 +513,7 @@ app.post('/update', upload.array('myfile',4), (req, res, next) => {
       ar.forEach(function(each){
         gfs.remove({ _id: each, root: 'uploads' }, (err, gridStore) => {
           if (err) {
-            console.log(arr)
+            console.log(err)
             return res.status(404).json({ err: err });
           }
       });
@@ -512,7 +526,37 @@ app.post('/update', upload.array('myfile',4), (req, res, next) => {
 
 });
 
+app.get("/noticecomm", function(req, res) {
+  res.render("deparcomm.ejs", {
+    files: [],
+    item:globalinfoofuser
+  })
+})
 
+app.post("/noticecomm", function(req, res) {
+  console.log(req.body.dep)
+  imgModel.find({
+    dept: req.body.dep
+  },'ques tofques notno justtime', (err, items) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(items)
+
+      imgModel.distinct('justtime', {
+        dept: req.body.dep
+      }, (err, ite) => {
+        if (err) {
+          console.log(err);
+        } else {
+          //console.log(ite)
+          res.render("showcomments.ejs",{item:globalinfoofuser,comms:items,times:ite})
+        }
+      });
+    }
+  });
+
+});
 
 
 
@@ -540,7 +584,7 @@ app.post("/notice/specdept", function(req, res) {
           console.log(err);
         } else {
 
-        //  console.log(items)
+         console.log(ite)
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
@@ -588,9 +632,33 @@ app.post("/wishes", function(req, res) {
 app.post("/specdept/addQues", function(req, res) {
   console.log(req.body.idofnot)
 
+
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var d = new Date();
+  var day = days[d.getDay()];
+  var hr = d.getHours();
+  var min = d.getMinutes();
+  if (min < 10) {
+    min = "0" + min;
+  }
+ var ampm = "am";
+if( hr > 12 ) {
+    hr -= 12;
+    ampm = "pm";
+  }
+  var date = d.getDate();
+  var month = months[d.getMonth()];
+  var year = d.getFullYear();
+
+
+  timee =  day + " " + hr + ":" + min + ampm + " " + date + " " + month + " " + year;
+  console.log(timee)
   imgModel.findByIdAndUpdate(req.body.idofnot, {
       "$push": {
         "ques": req.body.desc,
+        "tofques": timee,
+        "justtime":(new Date()).getTime(),
         "uofques":currentuseremailid
       }
     },
@@ -620,7 +688,7 @@ app.get("/notice/:specdept", function(req, res) {
           console.log(err);
         } else {
 
-          console.log(items)
+          //console.log(items)
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,

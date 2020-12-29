@@ -82,7 +82,7 @@ body {
 .palcemarg{
   margin: 1rem;
   border-radius: 8px;
-  background-color:#335159;
+  background-color:#5B6B61  ;
   /* background-color: white; */
   /* color: black; */
 }
@@ -93,7 +93,7 @@ body {
 /*BELOW CODE IS FOR OTPCHECK PAGE */
 
 .center {
-  position: absolute;
+position: absolute;
 left: 50%;
 top: 60%;
 

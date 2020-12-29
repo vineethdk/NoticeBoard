@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<div class="flex-parent jc-center">
+
+  <!-- <h5><%=comms%></h5> -->
+
+  <% times.slice().reverse().forEach(function(item) { %>
+  <% comms.forEach(function(commi) {%>
+  <%  commi.justtime.forEach(function(tim,index){%>
+
+  <%  if(tim==item){ %>
+    <div class="card ">
+
+
+  <h5><%= commi.notno %></h5>
+  <h5><%= commi.tofques[index] %></h5>
+  <h5><%= commi.ques[index] %></h5>
+  </div>
+
+  <%  }  %>
+
+        <hr>
+
+  <%})%>
+
+  <%})%>
+
+  <%})%>
+
+</div>
+
+</body>
+
+</html>

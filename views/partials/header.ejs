@@ -37,6 +37,10 @@
       <li class="nav-item active">
         <a class="headerfile nav-link forindex" href="/wishes?valid=<%= item._id %>">HOME <span class="sr-only">(current)</span></a>
         <a class="headerfile nav-link forindex" href="/">LOGOUT <span class="sr-only">(current)</span></a>
+        <% if(tou==='staff'){%>
+         <a class="headerfile nav-link forindex" href="/noticecomm">QUERIES <span class="sr-only">(current)</span></a>
+        <%}%>
+
       </li>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
