@@ -1,0 +1,143 @@
+<%- include('partials/header') %>
+<h1 class="row-centered1">Uplaoded Notices</h1>
+
+<div style="width:800px; margin:0 auto;">
+
+  <form class="row-centered" action="/noticecomm" method="POST">
+
+    <button class="updatebtn btn btn-outline-light shownoticebtn palcemarg imageadd" type="submit" name="dep" value="<%=file.dept%>">GO BACK</button>
+  </form>
+
+
+
+
+  <div>
+    <h5><b>NOTICENO:</b> <%= file.notno %></h5>
+    <h5><b>NAME:</b> <%= file.name %></h5>
+
+    <!-- <h5><%= file.date %></h5> -->
+
+    <p style='text-align: justify;'><b>DESCRIPTION:</b> <%= file.desc %></p>
+
+    <!--<P>DEPARTMENT: <%= file.dept %></P>-->
+
+
+
+
+    <!-- display image -->
+
+    <% file.img[0].data.forEach(function(name,index){ %>
+
+
+    <div class="rowcentered card card-body mb-3 cardcolor" style='width: 22rem; height:22rem'>
+
+
+      <% if(file.img[0].type[index]) { %>
+      <h5><%= name %></h5>
+      <a href="/imageonbig/<%= name %>"><img style='width: 18rem; height:12rem' src="/image/<%= name %>" alt=""></a>
+      <% } else { %>
+      <a style='color: black' class="forfiles" href="/files/<%= name %>" target="_blank"><%= name %></a>
+      <% } %>
+      <% if(tou==='staff'){%>
+      <form method="POST" action="/files">
+        <input type="hidden" name="idea" value="<%= file.img[0].ide[index] %>">
+        <input type="hidden" name="idoffile" value="<%= file._id %>">
+        <input type="hidden" name="ind" value="<%=index%>">
+        <input type="hidden" name="dataarr" value="<%=file.img[0].data%>">
+        <input type="hidden" name="typearr" value="<%=file.img[0].type%>">
+        <input type="hidden" name="idearr" value="<%=file.img[0].ide%>">
+        <input type="hidden" name="dept" value="<%=file.dept%>">
+        <button type="submit" class="btn btn-danger btn-block mt-4">Delete</button>
+      </form>
+      <% } %>
+    </div>
+
+    <% }) %>
+    <!-- till here -->
+    <% if(tou==='staff'){%>
+    <a href="/delete/<%= file._id %>/<%= file.dept %>"><button class="updatebtn btn btn-light butcolor" type="submit"><i class="fas fa-trash-alt"></i></button></a>
+
+    <a href="/update/<%= file._id %>"><button class="updatebtn btn btn-light butcolor" type="submit"><i class="fas fa-pencil-alt"></i></button></a>
+    <% } %>
+
+    <!-- below code is for : once the item is deleted to send the name of the department from which it was deleted  -->
+    <!-- <input type="hidden" name="selecteddept" value="<%= file.dept %>"> -->
+
+    <!-- <button type="button" name="button">UPDATE</button> -->
+
+  </div>
+
+
+  <h3>Comments</h3>
+
+  <% for (var i = 0; i < file.answ.length; i++) { %>
+
+  <!-- <tr style="border: 1px solid black;"> -->
+  <p style='color:#0A4152; margin-bottom:0.2rem '> <%= file.uofques[i] %> :</p>
+
+  <h5 style='text-align: justify;'><b><%= file.ques[i] %> </b> </h5>
+
+  <!-- </tr> -->
+
+  <!-- <tr> -->
+  <p style='text-align: justify;'><b>Reply:</b> <%= file.answ[i] %></p>
+  <!-- </tr> -->
+
+
+  <% } %>
+
+  <table>
+    <% for (var i = file.answ.length; i < file.uofques.length; i++) { %>
+
+    <!-- <tr style="border: 1px solid black;">
+            <td> <%= file.uofques[i] %> : </td>
+
+            <td> <%= file.ques[i] %> </td>
+          </tr> -->
+    <p> <%= file.uofques[i] %> :</p>
+
+    <h5 style='text-align: justify;'><b><%= file.ques[i] %> </b> </h5>
+
+
+    <% } %>
+  </table>
+
+  <!-- </form> -->
+
+  <!-- form to add questions from users -->
+  <% if(tou==='student'){%>
+  <form class="" action="/specdept/addQues" method="post">
+    <!-- below code is for : Adding question and answer text area -->
+    <label for="desc">Question</label>
+
+    <textarea class="form-control" style='width: 22rem;' id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+    <input type="hidden" name="idofnot" value="<%= file.id %>">
+
+    <input type="hidden" name="selecteddept" value="<%= file.dept %>">
+
+    <button class="updatebtn btn btn-light butcolor" type="submit">POST</button>
+
+  </form>
+  <% } %>
+
+  <!-- form to add answers from users -->
+  <% if(tou==='staff'){%>
+  <form class="" action="/specdept/addAnsfromcomm" method="post">
+    <label for="desc">Answer</label>
+
+    <textarea class="form-control" style='width: 22rem;' id="desc" name="desc" value="" rows="2" placeholder="Description" required></textarea>
+
+    <input type="hidden" name="idofnot" value="<%= file.id %>">
+
+    <input type="hidden" name="selecteddept" value="<%= file.dept %>">
+
+    <button class="updatebtn btn btn-light butcolor" type="submit">POST</button>
+  </form>
+  <%}%>
+  <hr style="  border-top: 2px dashed  ;color:white">
+
+</div>
+</body>
+
+</html>

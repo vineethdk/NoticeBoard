@@ -526,22 +526,38 @@ app.post('/update', upload.array('myfile',4), (req, res, next) => {
 
 });
 
+app.get("/noticecomm/:ide", function(req, res) {
+//  console.log(req.params.ide)
+  imgModel.findById(req.params.ide, (err, item) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("showspecnotice.ejs", {
+        file: item,
+        item:globalinfoofuser
+      });
+    }
+  });
+
+});
+
+
 app.get("/noticecomm", function(req, res) {
   res.render("deparcomm.ejs", {
     files: [],
     item:globalinfoofuser
-  })
-})
+  });
+});
 
 app.post("/noticecomm", function(req, res) {
-  console.log(req.body.dep)
+  //console.log(req.body.dep)
   imgModel.find({
     dept: req.body.dep
-  },'ques tofques notno justtime', (err, items) => {
+  },'ques tofques notno justtime answ', (err, items) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(items)
+      //console.log(items)
 
       imgModel.distinct('justtime', {
         dept: req.body.dep
@@ -584,7 +600,7 @@ app.post("/notice/specdept", function(req, res) {
           console.log(err);
         } else {
 
-         console.log(ite)
+         //console.log(ite)
           res.render('specificdept.ejs', {
             files: items,
             dates: ite,
@@ -703,6 +719,32 @@ app.get("/notice/:specdept", function(req, res) {
 })
 
 //Code below to add recieve answers posted.
+
+
+app.post("/specdept/addAnsfromcomm", function(req, res) {
+  console.log(req.body.idofnot)
+
+  imgModel.findByIdAndUpdate(req.body.idofnot, {
+      "$push": {
+        "answ": req.body.desc
+      }
+    }, {
+      "new": true,
+      "upsert": true
+    },
+    function(err, docs) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log("Updated User : ");
+        //Code below is to retrive the images of that department after adding the answer.
+        res.redirect("/noticecomm/"+ req.body.idofnot);
+      }
+    });
+
+});
+
+
 
 app.post("/specdept/addAns", function(req, res) {
   console.log(req.body.idofnot)

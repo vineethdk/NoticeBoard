@@ -3,22 +3,26 @@
 
   <!-- <h5><%=comms%></h5> -->
 
-  <% times.slice().reverse().forEach(function(item) { %>
+  <% times.forEach(function(item) { %>
   <% comms.forEach(function(commi) {%>
   <%  commi.justtime.forEach(function(tim,index){%>
 
   <%  if(tim==item){ %>
-    <div class="card ">
+  <% if (commi.answ.length < (index+1)){%>
+  <div class="card commcolor">
 
 
-  <h5><%= commi.notno %></h5>
-  <h5><%= commi.tofques[index] %></h5>
-  <h5><%= commi.ques[index] %></h5>
+    <h5><%= commi.notno %></h5>
+    <h5><%= commi.tofques[index] %></h5>
+    <h5><%= commi.ques[index] %></h5>
+    <a href="/noticecomm/<%= commi.id %>"><button class="btn btn-dark " type="button" name="button">Show Notice</button></a>
   </div>
+  <% } %>
+
 
   <%  }  %>
 
-        <hr>
+  <hr>
 
   <%})%>
 
