@@ -6,6 +6,9 @@
 <title>Notices</title>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+
 <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -40,10 +43,30 @@
               <input type="text" class="form-control" name="sid">
             </div>
 
-            <div class="form-group">
+            <div>
+              <label for="dep">Department</label>
+              <!-- <input type="text" id="dep" placeholder="department" value="" name="department" required> -->
+              <select class="form-control" name="dname" id="department">
+                <option value="ISE">ISE</option>
+                <option value="CSE">CSE</option>
+                <option value="TLE">TLE</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="CVE">CVE</option>
+                <option value="ME">ME</option>
+                <option value="ASE">ASE</option>
+                <option value="BT">BT</option>
+                <option value="IEM">IEM</option>
+                <option value="CHE">CHE</option>
+                <option value="EIE">EIE</option>
+              </select>
+            </div>
+            <br />
+
+            <!-- <div class="form-group">
               <label for="text">Department</label>
               <input type="text" class="form-control" name="dname">
-            </div>
+            </div> -->
 
             <div class="form-group" id ="emaili">
               <label for="email">Email</label>
@@ -52,9 +75,13 @@
 
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input id="password" type="password" class="form-control" name="password">
+              <meter max="4" id="password-strength-meter"></meter>
+              <p id="password-strength-text"></p>
+
+
             </div>
-            <button type="submit" class="btn btn-dark">Send OTP</button>
+            <button id = "but" type="submit" class="btn btn-dark">Send OTP</button>
           </form>
 
         </div>
@@ -74,6 +101,45 @@
 
   </div>
 </div>
+
+<!-- <script>
+
+var strength = {
+    0: "Worst ☹",
+    1: "Bad ☹",
+    2: "Weak ☹",
+    3: "Good ☺",
+    4: "Strong ☻"
+}
+var battu = document.getElementById('but');
+var password = document.getElementById('password');
+var meter = document.getElementById('password-strength-meter');
+var text = document.getElementById('password-strength-text');
+
+password.addEventListener('input', function()
+{
+    var val = password.value;
+    var result = zxcvbn(val);
+
+    // Update the password strength meter
+    meter.value = result.score;
+
+    // Update the text indicator
+    if(val !== "") {
+        text.innerHTML = "Strength: " + "<strong>" + strength[result.score] + "</strong>" + "<span class='feedback'>" + result.feedback.warning + " " + result.feedback.suggestions + "</span";
+    }
+    else {
+        text.innerHTML = "";
+    }
+   if (result.score < 3){
+     battu.disabled=true;
+   } else{
+     battu.disabled=false;
+   }
+
+});
+
+</script> -->
 
 </body>
 </html>

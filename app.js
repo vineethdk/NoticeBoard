@@ -93,6 +93,14 @@ var imageSchema = new mongoose.Schema({
 
 const imgModel = mongoose.model("Image", imageSchema);
 
+///PRACTISE BELOW MONTH///
+// imgModel.find({date:{ $gte: '2021-02-01', $lte: '2021-02-28' },dept:'CSE'},'name dept',function(err,file){
+// console.log(file);
+//
+// });
+
+///PRACTISE ABOVE///
+
 
 
 //**************************************************************************Tesing**********************************************//
@@ -281,7 +289,7 @@ app.get("/addNotice", function(req, res) {
 //and server picks it up that is in the form and posts to the screen after user hits submit butto or something.
 app.post('/addNotice', upload.array('myfile',4), (req, res, next) => {
 
-console.log(globalinfoofuser)
+//console.log(globalinfoofuser)
 
   var arr = []
   var arr1=[]
@@ -583,6 +591,45 @@ app.get("/notice", function(req, res) {
   })
 })
 
+
+///JUST PRACTICE BELOW SKIPPING DEPARTMENT//////
+
+// app.get("/notice/specdept", function(req, res) {
+//   // console.log(tou)
+//   //console.log(globalinfoofuser.dept)
+//
+//   imgModel.find({
+//     dept: globalinfoofuser.dept
+//   }, (err, items) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       //Below code is to retrive unique dates
+//       imgModel.distinct('date', {
+//         dept: globalinfoofuser.dept
+//       }, (err, ite) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//
+//          //console.log(ite)
+//           res.render('specificdept.ejs', {
+//             files: items,
+//             dates: ite,
+//             tou:tou,
+//             item:globalinfoofuser
+//           });
+//
+//         }
+//       });
+//
+//     }
+//   });
+// });
+
+
+////JUST PRACTISE ABOVE///
+
 app.post("/notice/specdept", function(req, res) {
   // console.log(tou)
   // console.log(app.locals)
@@ -635,6 +682,23 @@ app.get("/wishes", function(req, res) {
 
 });
 
+///PRACTISE BELOW///
+
+// app.post("/wishes", function(req, res) {
+//   // console.log(req.body.wish)
+//   if (req.body.wish == "shownotice") {
+//     if (tou =="staff"){
+//       res.redirect("/notice")
+//     } else {
+//       res.redirect("/notice/specdept");
+//     }
+//   } else {
+//     res.redirect("/addNotice")
+//   }
+// });
+
+///PRACTICE ABOVE///
+
 app.post("/wishes", function(req, res) {
   // console.log(req.body.wish)
   if (req.body.wish == "shownotice") {
@@ -642,7 +706,7 @@ app.post("/wishes", function(req, res) {
   } else {
     res.redirect("/addNotice")
   }
-})
+});
 
 //Code below to add recieve questions posted.
 app.post("/specdept/addQues", function(req, res) {
@@ -669,7 +733,7 @@ if( hr > 12 ) {
 
 
   timee =  day + " " + hr + ":" + min + ampm + " " + date + " " + month + " " + year;
-  console.log(timee)
+  // console.log(timee)
   imgModel.findByIdAndUpdate(req.body.idofnot, {
       "$push": {
         "ques": req.body.desc,
@@ -792,9 +856,10 @@ app.post('/files', (req, res) => {
   // console.log(req.body)
   // console.log(req.body.idoffile);
   // console.log(req.body.ind)
-  var arr = []
-  var arr1=[]
-  var arr2=[]
+
+  var arr = []//contains data
+  var arr1=[]//contains type
+  var arr2=[]//contains id
 
 
 
