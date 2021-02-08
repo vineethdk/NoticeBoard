@@ -1,5 +1,5 @@
 <%- include('partials/header') %>
-<div class="flex-parent jc-center">
+<div class=" ">
 
   <!-- <h5><%=comms%></h5> -->
 
@@ -9,20 +9,22 @@
 
   <%  if(tim==item){ %>
   <% if (commi.answ.length < (index+1)){%>
-  <div class="card commcolor">
+  <div class="card commcolor" style="width:30%; margin:1% auto; padding:1%;">
 
 
-    <h5><%= commi.notno %></h5>
-    <h5><%= commi.tofques[index] %></h5>
-    <h5><%= commi.ques[index] %></h5>
-    <a href="/noticecomm/<%= commi.id %>"><button class="btn btn-dark " type="button" name="button">Show Notice</button></a>
+    <h5><%= commi.notno %>. <%= commi.tofques[index] %></h5>
+     <h5><%= commi.ques[index] %></h5>
+    <a href="/noticecomm/<%= commi.id %>"><button class="btn btn-dark " style="width:100%;" type="button" name="button">Show Notice</button></a>
   </div>
-  <% } %>
+  <hr style="  border-top: 2px dashed  ;color:white; width:50%;">
 
+  <hr>
+
+  <% } %>
 
   <%  }  %>
 
-  <hr>
+
 
   <%})%>
 

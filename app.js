@@ -21,7 +21,7 @@ const saltRounds = 10;
 
 
 // Related to gridfs from here.
-const conn = mongoose.createConnection('mongodb://localhost:27017/imaDB', {
+const conn = mongoose.createConnection('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -36,7 +36,7 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-  url: 'mongodb://localhost:27017/imaDB',
+  url: 'mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB',
   file: (req, file) => {
     return new Promise((resolve, reject) => {
         const filename = file.originalname;
@@ -55,12 +55,12 @@ const upload = multer({ storage });
 
 
 //Connecting to real Database in mongoose website.//just un comment the below line.
-//mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://admin-vineeth:Test123@cluster0.rbcaz.mongodb.net/imaDB', {useNewUrlParser: true, useUnifiedTopology: true});
 //Connecting to local db in our computer.
-mongoose.connect('mongodb://localhost:27017/imaDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+// mongoose.connect('mongodb://localhost:27017/imaDB', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// });
 
 const app = express();
 
