@@ -203,13 +203,13 @@ app.post("/register", function(req, res) {
   let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'jamesbond31031999@gmail.com',
-      pass: 'hteenivdk'
+      user: enter your email id,
+      pass: enter your password
     }
   });
 
   let mailDetails = {
-    from: 'jamesbond31031999@gmail.com',
+    from: enter your email id,
     to: req.body.username,
     subject: 'Test mail',
     text: ot
